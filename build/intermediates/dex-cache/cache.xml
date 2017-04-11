@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/home/alex/Dokumente/4.Semester/SWWM/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
+        <dex dex="/home/alex/Dokumente/4.Semester/SWWM/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_db27cddba297f3f631b70ca77a4fc3472458c0d9/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/alex/Dokumente/4.Semester/SWWM/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="99c702bd73e83525dab16457dc362536c8afd33c">
+        <dex dex="/home/alex/Dokumente/4.Semester/SWWM/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_83b0ca8ade4c7be22582bb63c602921f81452e37/classes.dex" />
+    </item>
+
+</items>
