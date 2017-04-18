@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.WindowManager;
 
+import at.sw2017.todo4u.DashboardActivity;
+
 public class WelcomeScreen extends AppCompatActivity {
     private static int SPLASH_TIME_OUT = 5000;
 
@@ -19,7 +21,7 @@ public class WelcomeScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent homeIntent = new Intent(WelcomeScreen.this, HomeActivity.class);
+                Intent homeIntent = new Intent(WelcomeScreen.this, DashboardActivity.class);
                 startActivity(homeIntent);
                 finish();
             }
