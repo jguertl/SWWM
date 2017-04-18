@@ -2,6 +2,15 @@
 <items version="2" >
 
     <item
+        is-multidex="false"
+        jar="/home/alex/.android/build-cache/9f22037c5aff5fe29c7840f660b47f02ba88b6c6/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="fbb206f7a119f66ce171d95aae1225a5b209a8b7">
+        <dex dex="/home/alex/Dokumente/4.Semester/SWWM/app/build/intermediates/pre-dexed/debug/classes_29b036bfab79d4c473446fb83441046fcd39eca9.jar" />
+    </item>
+    <item
         is-multidex="true"
         jar="/home/alex/Dokumente/4.Semester/SWWM/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
@@ -16,8 +25,26 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="010c74242b88e66cf307d3c505a70fb12ae86ee9">
+        sha1="55dc5d986b937d4d1e24184f196b0f3ed08d0072">
         <dex dex="/home/alex/Dokumente/4.Semester/SWWM/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_83b0ca8ade4c7be22582bb63c602921f81452e37/classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/alex/.android/build-cache/e13506016ed3c22d59483b67ff697d3dd2dece5a/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="a3e61044038fb54cddf6b8dc79f41d2b57f42caf">
+        <dex dex="/home/alex/Dokumente/4.Semester/SWWM/app/build/intermediates/pre-dexed/debug/classes_8259b1c7e02eacaf09606a21cdce2fdc21c39a56.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/alex/.android/build-cache/f2b5636f6881282033ad7e215974bc2180889aad/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="9ab787a20aae245b5b3651ae0b9c38459eb37715">
+        <dex dex="/home/alex/Dokumente/4.Semester/SWWM/app/build/intermediates/pre-dexed/debug/classes_926c1e2e6e939cd2bd01a102422c8dc75bff0f76.jar" />
     </item>
 
 </items>
