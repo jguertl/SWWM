@@ -1,10 +1,7 @@
 package at.sw2017.todo4u.model;
 
 import android.util.SparseArray;
-
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Task extends BaseModel {
     private String title;
