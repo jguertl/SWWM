@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import at.sw2017.todo4u.database.TaskCategoriesDataSource;
 import at.sw2017.todo4u.database.TasksDataSource;
@@ -45,11 +46,11 @@ public class DatabaseTest {
         task.setDescription(taskDescription);
         task.setDueDate(dueCal.getTime());
         task.setCreationDate(creationDate);
+        task.setState(Task.State.IN_PROGRESS);
 
         TaskCategoriesDataSource tcDs = new TaskCategoriesDataSource(instrumentationCtx);
         tcDs.open();
         assertTrue(tcDs.insertOrUpdate(cat));
-        //tcDs.insertOrUpdate(cat);
         tcDs.close();
 
 
@@ -59,7 +60,6 @@ public class DatabaseTest {
 
         Task dbTask = tDs.getById(task.getId());
         assertNotNull(dbTask);
-        tDs.close();
 
         assertEquals(task.getId(), dbTask.getId());
         assertEquals(cat.getId(), dbTask.getCategory().getId());
@@ -69,6 +69,15 @@ public class DatabaseTest {
         assertEquals(dueCal.getTime(), dbTask.getDueDate());
         assertEquals(creationDate, dbTask.getCreationDate());
         assertNull(dbTask.getReminderDate());
+        assertEquals(Task.State.IN_PROGRESS, dbTask.getState());
+
+        List<Task> tasksInCategory = tDs.getTasksInCategory(cat);
+
+        assertNotNull(tasksInCategory);
+        assertEquals(1, tasksInCategory.size());
+        assertEquals(task.getId(), tasksInCategory.get(0).getId());
+
+        tDs.close();
 
 
     }
