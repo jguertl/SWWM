@@ -14,10 +14,10 @@ import at.sw2017.todo4u.model.BaseModel;
 
 abstract class AbstractDataSource<T extends BaseModel> {
     // Database fields
-    private SQLiteDatabase database;
+    protected SQLiteDatabase database;
     private Todo4uDbHelper dbHelper;
-    private String[] allColumns;
-    private String tableName;
+    protected String[] allColumns;
+    protected String tableName;
 
     public AbstractDataSource(Context context, String[] allColumns, String tableName) {
         dbHelper = new Todo4uDbHelper(context);

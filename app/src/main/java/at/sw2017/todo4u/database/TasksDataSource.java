@@ -4,6 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import at.sw2017.todo4u.model.Task;
 import at.sw2017.todo4u.model.TaskCategory;
 
@@ -94,5 +97,30 @@ public class TasksDataSource extends AbstractDataSource<Task> {
             task.setState(cursor.getInt(7));
         }
         return task;
+    }
+
+    public List<Task> getTasksInCategory(TaskCategory category) {
+        return getTasksInCategory(category.getId());
+    }
+
+    public List<Task> getTasksInCategory(long categoryId) {
+        List<Task> objs = new ArrayList<>();
+
+        Cursor cursor = database.query(
+                tableName,
+                allColumns,
+                Todo4uContract.Task.CATEGORY_ID + " = ?",
+                new String[]{Long.toString(categoryId)},
+                null, null, null
+        );
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Task obj = cursorToObject(cursor);
+            objs.add(obj);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return objs;
     }
 }
