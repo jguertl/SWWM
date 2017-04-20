@@ -9,10 +9,15 @@ import at.sw2017.todo4u.model.TaskCategory;
 
 public class TasksDataSource extends AbstractDataSource<Task> {
     public TasksDataSource(Context context) {
-        super(context, new String[]{Todo4uContract.Task._ID, Todo4uContract.Task.TITLE,
-                Todo4uContract.Task.DESCRIPTION, Todo4uContract.Task.DUE_DATE,
-                Todo4uContract.Task.CREATION_DATE, Todo4uContract.Task.REMINDER_DATE,
-                Todo4uContract.Task.CATEGORY_ID}, Todo4uContract.Task._TABLE_NAME);
+        super(context,
+                new String[]{
+                        Todo4uContract.Task._ID, Todo4uContract.Task.TITLE,
+                        Todo4uContract.Task.DESCRIPTION, Todo4uContract.Task.DUE_DATE,
+                        Todo4uContract.Task.CREATION_DATE, Todo4uContract.Task.REMINDER_DATE,
+                        Todo4uContract.Task.CATEGORY_ID, Todo4uContract.Task.STATE
+                },
+                Todo4uContract.Task._TABLE_NAME
+        );
     }
 
     @Override
@@ -23,19 +28,19 @@ public class TasksDataSource extends AbstractDataSource<Task> {
 
         values.put(Todo4uContract.Task.DESCRIPTION, task.getDescription());
 
-        if(task.getDueDate() == null) {
+        if (task.getDueDate() == null) {
             values.putNull(Todo4uContract.Task.DUE_DATE);
         } else {
             values.put(Todo4uContract.Task.DUE_DATE, task.getDueDateAsNumber());
         }
 
-        if(task.getCreationDate() == null) {
+        if (task.getCreationDate() == null) {
             values.putNull(Todo4uContract.Task.CREATION_DATE);
         } else {
             values.put(Todo4uContract.Task.CREATION_DATE, task.getCreationDateAsNumber());
         }
 
-        if(task.getReminderDate() == null) {
+        if (task.getReminderDate() == null) {
             values.putNull(Todo4uContract.Task.REMINDER_DATE);
         } else {
             values.put(Todo4uContract.Task.REMINDER_DATE, task.getReminderDateAsNumber());
@@ -47,6 +52,12 @@ public class TasksDataSource extends AbstractDataSource<Task> {
             values.putNull(Todo4uContract.Task.CATEGORY_ID);
         }
 
+        if (task.getState() != null) {
+            values.put(Todo4uContract.Task.STATE, task.getStateId());
+        } else {
+            values.putNull(Todo4uContract.Task.STATE);
+        }
+
         return values;
     }
 
@@ -55,7 +66,7 @@ public class TasksDataSource extends AbstractDataSource<Task> {
         Task task = new Task();
         task.setId(cursor.getLong(0));
         task.setTitle(cursor.getString(1));
-        if(!cursor.isNull(2)) {
+        if (!cursor.isNull(2)) {
             task.setDescription(cursor.getString(2));
         }
         if (!cursor.isNull(3)) {
@@ -70,14 +81,17 @@ public class TasksDataSource extends AbstractDataSource<Task> {
         if (!cursor.isNull(6)) {
             TaskCategoriesDataSource ds = new TaskCategoriesDataSource(getContext());
             boolean isOpen = ds.isDatabaseOpen();
-            if(!isOpen) {
+            if (!isOpen) {
                 ds.openReadonly();
             }
             TaskCategory category = ds.getById(cursor.getLong(6));
             task.setCategory(category);
-            if(!isOpen) {
+            if (!isOpen) {
                 ds.close();
             }
+        }
+        if (!cursor.isNull(7)) {
+            task.setState(cursor.getInt(7));
         }
         return task;
     }

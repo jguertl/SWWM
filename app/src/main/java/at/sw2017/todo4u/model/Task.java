@@ -1,6 +1,10 @@
 package at.sw2017.todo4u.model;
 
+import android.util.SparseArray;
+
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Task extends BaseModel {
     private String title;
@@ -9,6 +13,17 @@ public class Task extends BaseModel {
     private Date creationDate;
     private Date reminderDate;
     private TaskCategory category;
+    private State state;
+
+    public enum State {
+        OPEN(0), FINISHED(1), IN_PROGRESS(2);
+
+        private final int stateId;
+
+        State(int stateId) {
+            this.stateId = stateId;
+        }
+    }
 
     public Task() {
     }
@@ -38,7 +53,7 @@ public class Task extends BaseModel {
     }
 
     public Long getDueDateAsNumber() {
-        if(dueDate == null) return null;
+        if (dueDate == null) return null;
         return dueDate.getTime();
     }
 
@@ -55,7 +70,7 @@ public class Task extends BaseModel {
     }
 
     public Long getCreationDateAsNumber() {
-        if(creationDate == null) return null;
+        if (creationDate == null) return null;
         return creationDate.getTime();
     }
 
@@ -72,7 +87,7 @@ public class Task extends BaseModel {
     }
 
     public Long getReminderDateAsNumber() {
-        if(reminderDate == null) return null;
+        if (reminderDate == null) return null;
         return reminderDate.getTime();
     }
 
@@ -92,6 +107,30 @@ public class Task extends BaseModel {
         this.category = category;
     }
 
+    public State getState() {
+        return state;
+    }
+
+    public int getStateId() {
+        return state.stateId;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    private static final SparseArray<State> stateMap = new SparseArray<>();
+
+    static {
+        for (State type : State.values()) {
+            stateMap.put(type.stateId, type);
+        }
+    }
+
+    public void setState(int stateId) {
+        this.state = stateMap.get(stateId);
+    }
+
     @Override
     public String toString() {
         return "Task{" +
@@ -101,6 +140,8 @@ public class Task extends BaseModel {
                 ", dueDate=" + dueDate +
                 ", creationDate=" + creationDate +
                 ", reminderDate=" + reminderDate +
+                ", category=" + category +
+                ", state=" + state +
                 '}';
     }
 }
