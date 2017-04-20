@@ -77,6 +77,10 @@ public class ModelTest {
         assertEquals(1, t1.getStateId());
         t1.setState(Task.State.IN_PROGRESS);
         assertEquals(2, t1.getStateId());
+
+        assertEquals(Task.State.OPEN, Task.State.valueOf("OPEN"));
+        assertEquals(Task.State.FINISHED, Task.State.valueOf("FINISHED"));
+        assertEquals(Task.State.IN_PROGRESS, Task.State.valueOf("IN_PROGRESS"));
     }
 
     @Test

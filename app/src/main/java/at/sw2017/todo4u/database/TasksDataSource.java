@@ -25,19 +25,102 @@ public class TasksDataSource extends AbstractDataSource<Task> {
 
     @Override
     protected ContentValues getContentValues(Task task) {
-		return null;
+        ContentValues values = new ContentValues();
+
+        values.put(Todo4uContract.Task.TITLE, task.getTitle());
+
+        values.put(Todo4uContract.Task.DESCRIPTION, task.getDescription());
+
+        if (task.getDueDate() == null) {
+            values.putNull(Todo4uContract.Task.DUE_DATE);
+        } else {
+            values.put(Todo4uContract.Task.DUE_DATE, task.getDueDateAsNumber());
+        }
+
+        if (task.getCreationDate() == null) {
+            values.putNull(Todo4uContract.Task.CREATION_DATE);
+        } else {
+            values.put(Todo4uContract.Task.CREATION_DATE, task.getCreationDateAsNumber());
+        }
+
+        if (task.getReminderDate() == null) {
+            values.putNull(Todo4uContract.Task.REMINDER_DATE);
+        } else {
+            values.put(Todo4uContract.Task.REMINDER_DATE, task.getReminderDateAsNumber());
+        }
+
+        if (task.getCategory() != null) {
+            values.put(Todo4uContract.Task.CATEGORY_ID, task.getCategory().getId());
+        } else {
+            values.putNull(Todo4uContract.Task.CATEGORY_ID);
+        }
+
+        if (task.getState() != null) {
+            values.put(Todo4uContract.Task.STATE, task.getStateId());
+        } else {
+            values.putNull(Todo4uContract.Task.STATE);
+        }
+
+        return values;
     }
 
     @Override
     protected Task cursorToObject(Cursor cursor) {
-		return null;
+        Task task = new Task();
+        task.setId(cursor.getLong(0));
+        task.setTitle(cursor.getString(1));
+        if (!cursor.isNull(2)) {
+            task.setDescription(cursor.getString(2));
+        }
+        if (!cursor.isNull(3)) {
+            task.setDueDate(cursor.getLong(3));
+        }
+        if (!cursor.isNull(4)) {
+            task.setCreationDate(cursor.getLong(4));
+        }
+        if (!cursor.isNull(5)) {
+            task.setReminderDate(cursor.getLong(5));
+        }
+        if (!cursor.isNull(6)) {
+            TaskCategoriesDataSource ds = new TaskCategoriesDataSource(getContext());
+            boolean isOpen = ds.isDatabaseOpen();
+            if (!isOpen) {
+                ds.openReadonly();
+            }
+            TaskCategory category = ds.getById(cursor.getLong(6));
+            task.setCategory(category);
+            if (!isOpen) {
+                ds.close();
+            }
+        }
+        if (!cursor.isNull(7)) {
+            task.setState(cursor.getInt(7));
+        }
+        return task;
     }
 
     public List<Task> getTasksInCategory(TaskCategory category) {
-		return null;
+        return getTasksInCategory(category.getId());
     }
 
     public List<Task> getTasksInCategory(long categoryId) {
-        return null;
+        List<Task> objs = new ArrayList<>();
+
+        Cursor cursor = database.query(
+                tableName,
+                allColumns,
+                Todo4uContract.Task.CATEGORY_ID + " = ?",
+                new String[]{Long.toString(categoryId)},
+                null, null, null
+        );
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Task obj = cursorToObject(cursor);
+            objs.add(obj);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return objs;
     }
 }

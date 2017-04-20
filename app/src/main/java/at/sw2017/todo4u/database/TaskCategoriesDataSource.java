@@ -14,12 +14,17 @@ public class TaskCategoriesDataSource extends AbstractDataSource<TaskCategory> {
 
     @Override
     protected ContentValues getContentValues(TaskCategory object) {
-		return null;
+        ContentValues values = new ContentValues();
+        values.put(Todo4uContract.TaskCategory.NAME, object.getName());
+        return values;
     }
 
     @Override
     protected TaskCategory cursorToObject(Cursor cursor) {
-        return null;
+        TaskCategory obj = new TaskCategory();
+        obj.setId(cursor.getLong(0));
+        obj.setName(cursor.getString(1));
+        return obj;
     }
 
 }
