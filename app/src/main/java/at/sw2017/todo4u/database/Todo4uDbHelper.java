@@ -47,7 +47,8 @@ public class Todo4uDbHelper extends SQLiteOpenHelper {
                     Todo4uContract.Task.DUE_DATE + " INTEGER," +
                     Todo4uContract.Task.CREATION_DATE + " INTEGER," +
                     Todo4uContract.Task.REMINDER_DATE + " INTEGER," +
-                    Todo4uContract.Task.CATEGORY_ID + " INTEGER);";
+                    Todo4uContract.Task.CATEGORY_ID + " INTEGER," +
+                    Todo4uContract.Task.STATE + " INTEGER);";
     private static final String SQL_CREATE_TASKCATEGORY =
             "CREATE TABLE " + Todo4uContract.TaskCategory._TABLE_NAME + " (" +
                     Todo4uContract.TaskCategory._ID + " INTEGER PRIMARY KEY," +
