@@ -6,4 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".CategoryListActivity">
 
+    <ListView
+        android:id="@+id/category_list_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+
+
 </android.support.constraint.ConstraintLayout>
