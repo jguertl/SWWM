@@ -3,8 +3,6 @@ package at.sw2017.todo4u;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,20 +13,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-
-    private ImageButton bt_add_todo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        bt_add_todo = (ImageButton) findViewById(R.id.bt_add);
-        bt_add_todo.setOnClickListener(this);
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -96,8 +93,10 @@ public class DashboardActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
+        } else if (id == R.id.nav_category_list) {
+            Intent homeIntent = new Intent(DashboardActivity.this, CategoryListActivity.class);
+            startActivity(homeIntent);
+            finish();
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
