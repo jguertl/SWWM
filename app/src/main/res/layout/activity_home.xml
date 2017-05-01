@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="at.sw2017.swwm.HomeActivity">
+    tools:context="at.sw2017.todo4u.HomeActivity">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="Home Activity started!"
         android:textAlignment="center"
         android:textColor="#ffffff"

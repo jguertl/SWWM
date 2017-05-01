@@ -11,6 +11,10 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="Gallery" />
         <item
+            android:id="@+id/nav_category_list"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Category List" />
+        <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Slideshow" />
