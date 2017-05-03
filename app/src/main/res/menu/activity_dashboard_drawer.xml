@@ -22,6 +22,10 @@
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
             android:title="Tools" />
+        <item
+            android:id="@+id/nav_category_add"
+            android:icon="@drawable/ic_add_circle_outline_black_100dp"
+            android:title="@string/category_add_title" />
     </group>
 
     <item android:title="Communicate">
