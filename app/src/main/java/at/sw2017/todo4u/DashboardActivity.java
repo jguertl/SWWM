@@ -106,10 +106,13 @@ public class DashboardActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_category_list) {
 
+        } else if (id == R.id.nav_category_add) {
+            Intent intent = new Intent(this, CategoryAddActivity.class);
+            this.startActivity(intent);
+        } else {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
