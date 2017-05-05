@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:background="@drawable/ic_add_circle_outline_black_100dp"
+        android:background="@drawable/ic_add_circle_outline_dark_color_100dp"
         android:onClick="changeToAddView"/>
 
 </android.support.design.widget.CoordinatorLayout>

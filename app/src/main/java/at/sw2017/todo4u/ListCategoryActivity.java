@@ -2,22 +2,28 @@ package at.sw2017.todo4u;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-public class DashboardActivity extends AppCompatActivity
+public class ListCategoryActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
+    private ListView category_list_view;
+    private String test[] = {"Homework", "Training", "get present for mum"};
+    private ImageButton bt_add_category;
+    private ImageButton bt_search_category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +31,13 @@ public class DashboardActivity extends AppCompatActivity
         setContentView(R.layout.activity_dashboard);
 
 
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle("Dashboard");
+        setTitle("Categories");
+
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, test);
+        category_list_view = (ListView) findViewById(R.id.category_list_view);
+        category_list_view.setAdapter(adapter);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -41,14 +49,6 @@ public class DashboardActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-
-    public void changeToAddView(View v){
-            Intent homeIntent = new Intent(DashboardActivity.this, WelcomeScreen.class);
-            startActivity(homeIntent);
-            finish();
-            //setContentView(R.layout.activity_welcome_screen);
-
-        }
 
 
     @Override
@@ -64,7 +64,7 @@ public class DashboardActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.dashboard, menu);
+        getMenuInflater().inflate(R.menu.categorylist, menu);
         return true;
     }
 
@@ -76,9 +76,15 @@ public class DashboardActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.item_settings) {
-            return true;
-        } else if(id == R.id.item_search) {
+        if (id == R.id.bt_add_category) {
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(ListCategoryActivity.this);
+            View mView = getLayoutInflater().inflate(R.layout.activity_category_add_popup, null);
+            EditText new_category = (EditText) mView.findViewById(R.id.tx_new_category);
+
+            mBuilder.setView(mView);
+            AlertDialog dialog = mBuilder.create();
+            dialog.show();
+        } else if(id == R.id.bt_search_category) {
             return true;
         }
 
@@ -94,7 +100,7 @@ public class DashboardActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_category_list) {
-            Intent homeIntent = new Intent(DashboardActivity.this, CategoryListActivity.class);
+            Intent homeIntent = new Intent(ListCategoryActivity.this, CategoryListActivity.class);
             startActivity(homeIntent);
             finish();
         } else if (id == R.id.nav_slideshow) {
@@ -104,6 +110,8 @@ public class DashboardActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
+
+        } else if (id == R.id.nav_category_list) {
 
         }
 
