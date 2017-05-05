@@ -2,6 +2,7 @@ package at.sw2017.todo4u;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -31,8 +33,6 @@ public class CategoryListActivity extends AppCompatActivity implements View.OnCl
 
     private ListView category_list_view;
     public String test[] = {"Homework", "Training", "get present for mum"};
-    private ImageButton bt_add_category;
-    private ImageButton bt_search_category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +53,14 @@ public class CategoryListActivity extends AppCompatActivity implements View.OnCl
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_category);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Categories");
 
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, categoriesAsString);
         //ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, test);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, test);
         category_list_view = (ListView) findViewById(R.id.category_list_view);
         category_list_view.setAdapter(adapter);
 
-
-
-        //bt_add_category = (ImageButton) findViewById(R.id.bt_search_category);
-        //bt_add_category.setOnClickListener(this);
     }
 
 
@@ -88,8 +85,9 @@ public class CategoryListActivity extends AppCompatActivity implements View.OnCl
         } else if(id == R.id.bt_search_category) {
             return true;
         } else if(id == android.R.id.home) {
-            this.finish();
-            return true;
+            Intent homeIntent = new Intent(CategoryListActivity.this, DashboardActivity.class);
+            startActivity(homeIntent);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
