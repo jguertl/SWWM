@@ -1,16 +1,11 @@
 package at.sw2017.todo4u;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.core.deps.guava.collect.Lists;
 import android.support.test.rule.ActivityTestRule;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -29,7 +24,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 /**
  * Created by rwenig on 06.05.17.
@@ -48,7 +42,7 @@ public class CategoryListActivityTest {
         context = InstrumentationRegistry.getTargetContext();
         tcDs = new TaskCategoriesDataSource(context);
 
-        //clear database
+        //clear database before test
         tcDs.open();
         List<TaskCategory> categories = tcDs.getAll();
         for (TaskCategory taskCategory : categories) {
@@ -59,7 +53,7 @@ public class CategoryListActivityTest {
 
     @After
     public void tearDown() {
-        //clear database
+        //clear database after test
         tcDs.open();
         List<TaskCategory> categories = tcDs.getAll();
         for (TaskCategory taskCategory : categories) {
@@ -112,8 +106,43 @@ public class CategoryListActivityTest {
         onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).check(matches(withText("test2")));
     }
 
+    @Test
+    public void testSearch() {
+        TaskCategory testCategory1 = new TaskCategory("test");
+        TaskCategory testCategory2 = new TaskCategory("tes");
+        TaskCategory testCategory3 = new TaskCategory("te");
+        TaskCategory testCategory4 = new TaskCategory("t");
+
+        tcDs.open();
+        tcDs.insertOrUpdate(testCategory1);
+        tcDs.insertOrUpdate(testCategory2);
+        tcDs.insertOrUpdate(testCategory3);
+        tcDs.insertOrUpdate(testCategory4);
+        tcDs.close();
 
 
+        onView(withId(R.id.bt_search_category)).perform(click());
+        onView(withId(android.support.design.R.id.search_src_text))
+                .perform(typeText("t"), closeSoftKeyboard());
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).check(matches(withText("tes")));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(2).check(matches(withText("te")));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(3).check(matches(withText("t")));
 
+        onView(withId(android.support.design.R.id.search_src_text))
+                .perform(typeText("e"), closeSoftKeyboard());
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).check(matches(withText("tes")));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(2).check(matches(withText("te")));
+
+        onView(withId(android.support.design.R.id.search_src_text))
+                .perform(typeText("s"), closeSoftKeyboard());
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).check(matches(withText("tes")));
+
+        onView(withId(android.support.design.R.id.search_src_text))
+                .perform(typeText("t"), closeSoftKeyboard());
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
+    }
 
 }

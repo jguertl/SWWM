@@ -1,41 +1,32 @@
 package at.sw2017.todo4u;
 
-import android.app.ActionBar;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import at.sw2017.todo4u.R;
 import at.sw2017.todo4u.database.TaskCategoriesDataSource;
 import at.sw2017.todo4u.model.TaskCategory;
 
 
-public class CategoryListActivity extends AppCompatActivity implements View.OnClickListener {
+public class CategoryListActivity extends AppCompatActivity implements View.OnClickListener, SearchView.OnQueryTextListener {
 
 
     private ListView category_list_view;
     private ArrayAdapter adapter;
     private TaskCategoriesDataSource tcds;
-    public String test[] = {"Homework", "Training", "get present for mum"};
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +34,18 @@ public class CategoryListActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_category_list);
 
         tcds = new TaskCategoriesDataSource(this);
+/*
+        //insert Test Data
+        TaskCategory testCategory1 = new TaskCategory("test");
+        TaskCategory testCategory2 = new TaskCategory("awesome test");
         tcds.open();
-        List<TaskCategory> categories = new ArrayList<>();
-        categories = tcds.getAll();
+        tcds.insertOrUpdate(testCategory1);
+        tcds.insertOrUpdate(testCategory2);
+        tcds.close();
+        //++++++++++++++++++++++
+*/
+        tcds.open();
+        List<TaskCategory> categories = tcds.getAll();
         tcds.close();
 
         List<String> categoriesAsString = new ArrayList<>();
@@ -69,6 +69,10 @@ public class CategoryListActivity extends AppCompatActivity implements View.OnCl
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.categorylist, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.bt_search_category).getActionView();
+        searchView.setOnQueryTextListener(this);
         return true;
     }
 
@@ -126,4 +130,31 @@ public class CategoryListActivity extends AppCompatActivity implements View.OnCl
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        List<String> foundCategories = new ArrayList<>();
+        tcds.open();
+        List<TaskCategory> taskCategories = tcds.getAll();
+        tcds.close();
+
+        for (TaskCategory taskCategory : taskCategories) {
+            if (taskCategory.getName().contains(newText)) {
+                foundCategories.add(taskCategory.getName());
+            }
+        }
+
+        updateData(foundCategories);
+        return false;
+    }
+
+    private void updateData(List<String> data) {
+        adapter.clear();
+        adapter.addAll(data);
+        adapter.notifyDataSetChanged();
+    }
 }

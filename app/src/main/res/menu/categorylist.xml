@@ -10,11 +10,12 @@
         app:showAsAction="always"/>
 
 
-    <item android:id="@+id/bt_search_category"
-        android:title="Search"
+    <item
+        android:id="@+id/bt_search_category"
         android:icon="@drawable/ic_search_black_24dp"
-        app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="android.support.v7.widget.SearchView" />
+        android:title="Search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
 
 
 </menu>
