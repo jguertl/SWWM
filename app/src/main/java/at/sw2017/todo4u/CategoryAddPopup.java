@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import at.sw2017.todo4u.database.TaskCategoriesDataSource;
 import at.sw2017.todo4u.model.TaskCategory;
 
@@ -50,6 +52,15 @@ public class CategoryAddPopup extends AppCompatActivity implements View.OnClickL
             Toast.makeText(getApplicationContext(), "At least one character, please", Toast.LENGTH_SHORT).show();
         } else {
             tcds.open();
+            List<TaskCategory> taskCategories = tcds.getAll();
+            for (TaskCategory taskCategory : taskCategories) {
+                if (taskCategory.getName().equals(help_str)) {
+                    Toast.makeText(getApplicationContext(), "Category already exist", Toast.LENGTH_SHORT).show();
+                    finish();
+                    return;
+                }
+            }
+
             TaskCategory taskCategory = new TaskCategory(help_str);
             tcds.insertOrUpdate(taskCategory);
             tcds.close();
@@ -67,4 +78,5 @@ public class CategoryAddPopup extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
 
     }
+
 }

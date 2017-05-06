@@ -125,4 +125,5 @@ public class CategoryListActivity extends AppCompatActivity implements View.OnCl
         adapter.addAll(categoriesAsStrings);
         adapter.notifyDataSetChanged();
     }
+
 }

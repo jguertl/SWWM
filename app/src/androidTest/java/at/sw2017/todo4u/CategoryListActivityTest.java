@@ -1,6 +1,7 @@
 package at.sw2017.todo4u;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.core.deps.guava.collect.Lists;
 import android.support.test.rule.ActivityTestRule;
@@ -41,29 +42,13 @@ public class CategoryListActivityTest {
     @Rule
     public ActivityTestRule<CategoryListActivity> mActivityRule = new ActivityTestRule(CategoryListActivity.class);
 
-    @BeforeClass
-    public static void before() {
-
-    }
 
     @Before
     public void setUp() {
         context = InstrumentationRegistry.getTargetContext();
         tcDs = new TaskCategoriesDataSource(context);
-/*
-        TaskCategory testCategory1 = new TaskCategory("test");
-        TaskCategory testCategory2 = new TaskCategory("awesome test");
 
-        tcDs.open();
-        tcDs.insertOrUpdate(testCategory1);
-        tcDs.insertOrUpdate(testCategory2);
-        tcDs.close();
-*/
-
-    }
-/*
-    @After
-    public void tearDown() {
+        //clear database
         tcDs.open();
         List<TaskCategory> categories = tcDs.getAll();
         for (TaskCategory taskCategory : categories) {
@@ -72,11 +57,32 @@ public class CategoryListActivityTest {
         tcDs.close();
     }
 
-*/
+    @After
+    public void tearDown() {
+        //clear database
+        tcDs.open();
+        List<TaskCategory> categories = tcDs.getAll();
+        for (TaskCategory taskCategory : categories) {
+            tcDs.delete(taskCategory);
+        }
+        tcDs.close();
+    }
+
+
     @Test
     public void testOnCreate() {
-        //onData(withId(R.id.category_list_view)).check(matches(withText("Help")));
-        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(2).check(matches(withText("Help")));
+        TaskCategory testCategory1 = new TaskCategory("test");
+        TaskCategory testCategory2 = new TaskCategory("awesome test");
+
+        tcDs.open();
+        tcDs.insertOrUpdate(testCategory1);
+        tcDs.insertOrUpdate(testCategory2);
+        tcDs.close();
+
+        //workaround to call onResume methode
+        onView(withId(R.id.bt_add_category)).perform(click());
+        onView(withId(R.id.btn_cancel)).perform(click());
+
         onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
         onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).check(matches(withText("awesome test")));
     }
@@ -90,5 +96,24 @@ public class CategoryListActivityTest {
         onView(withId(R.id.btn_save)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
     }
+
+    @Test
+    public void testInsertTaskCategoryAlreadyExist() {
+        onView(withId(R.id.bt_add_category)).perform(click());
+        onView(withId(R.id.tx_new_category)).perform(typeText("test"), closeSoftKeyboard());
+        onView(withId(R.id.btn_save)).perform(click());
+        onView(withId(R.id.bt_add_category)).perform(click());
+        onView(withId(R.id.tx_new_category)).perform(typeText("test"), closeSoftKeyboard());
+        onView(withId(R.id.btn_save)).perform(click());
+        onView(withId(R.id.bt_add_category)).perform(click());
+        onView(withId(R.id.tx_new_category)).perform(typeText("test2"), closeSoftKeyboard());
+        onView(withId(R.id.btn_save)).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).check(matches(withText("test2")));
+    }
+
+
+
+
 
 }
