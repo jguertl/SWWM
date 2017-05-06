@@ -1,8 +1,11 @@
 package at.sw2017.todo4u;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,12 +19,13 @@ import at.sw2017.todo4u.database.TaskCategoriesDataSource;
 import at.sw2017.todo4u.model.TaskCategory;
 
 
-public class CategoryListActivity extends AppCompatActivity {
+public class CategoryListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
 
     private ListView category_list_view;
     private ArrayAdapter adapter;
     private TaskCategoriesDataSource tcds;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,10 @@ public class CategoryListActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.categorylist, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.bt_search_category).getActionView();
+        searchView.setOnQueryTextListener(this);
         return true;
     }
 
@@ -106,4 +114,31 @@ public class CategoryListActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        List<String> foundCategories = new ArrayList<>();
+        tcds.open();
+        List<TaskCategory> taskCategories = tcds.getAll();
+        tcds.close();
+
+        for (TaskCategory taskCategory : taskCategories) {
+            if (taskCategory.getName().contains(newText)) {
+                foundCategories.add(taskCategory.getName());
+            }
+        }
+
+        updateData(foundCategories);
+        return false;
+    }
+
+    private void updateData(List<String> data) {
+        adapter.clear();
+        adapter.addAll(data);
+        adapter.notifyDataSetChanged();
+    }
 }

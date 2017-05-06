@@ -133,7 +133,7 @@ public class CategoryListActivityTest {
         onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(2).check(matches(withText("te")));
 
         onView(withId(android.support.design.R.id.search_src_text))
-                .perform(typeText("s"), closeSoftKeyboard());
+                .perform(typeText("s\n"), closeSoftKeyboard());
         onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
         onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).check(matches(withText("tes")));
 
