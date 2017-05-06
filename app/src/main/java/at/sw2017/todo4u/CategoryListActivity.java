@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +33,8 @@ public class CategoryListActivity extends AppCompatActivity implements View.OnCl
 
 
     private ListView category_list_view;
+    private ArrayAdapter adapter;
+    private TaskCategoriesDataSource tcds;
     public String test[] = {"Homework", "Training", "get present for mum"};
 
     @Override
@@ -39,7 +42,7 @@ public class CategoryListActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_list);
 
-        TaskCategoriesDataSource tcds = new TaskCategoriesDataSource(this);
+        tcds = new TaskCategoriesDataSource(this);
         tcds.open();
         List<TaskCategory> categories = new ArrayList<>();
         categories = tcds.getAll();
@@ -50,17 +53,15 @@ public class CategoryListActivity extends AppCompatActivity implements View.OnCl
             categoriesAsString.add(taskCategory.getName());
         }
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_category);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Categories");
 
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, categoriesAsString);
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, categoriesAsString);
         //ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, test);
         category_list_view = (ListView) findViewById(R.id.category_list_view);
         category_list_view.setAdapter(adapter);
-
     }
 
 
@@ -104,5 +105,24 @@ public class CategoryListActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View v) {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateData();
+    }
+
+    public void updateData() {
+        List<String> categoriesAsStrings = new ArrayList<>();
+        adapter.clear();
+        tcds.open();
+        List<TaskCategory> taskCategories = tcds.getAll();
+        tcds.close();
+        for (TaskCategory taskCategory : taskCategories) {
+            categoriesAsStrings.add(taskCategory.getName());
+        }
+        adapter.addAll(categoriesAsStrings);
+        adapter.notifyDataSetChanged();
     }
 }

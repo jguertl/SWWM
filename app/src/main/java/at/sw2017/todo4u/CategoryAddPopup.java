@@ -12,13 +12,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import at.sw2017.todo4u.database.TaskCategoriesDataSource;
+import at.sw2017.todo4u.model.TaskCategory;
+
 public class CategoryAddPopup extends AppCompatActivity implements View.OnClickListener{
 
     private EditText tx_new_category;
+    TaskCategoriesDataSource tcds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        tcds = new TaskCategoriesDataSource(this);
 
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -30,7 +35,7 @@ public class CategoryAddPopup extends AppCompatActivity implements View.OnClickL
         int Width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int) (Width * .8), (int) (height * .37));
+        getWindow().setLayout((int) (Width * .8), (int) (height * .50));
     }
 
 
@@ -44,6 +49,10 @@ public class CategoryAddPopup extends AppCompatActivity implements View.OnClickL
         {
             Toast.makeText(getApplicationContext(), "At least one character, please", Toast.LENGTH_SHORT).show();
         } else {
+            tcds.open();
+            TaskCategory taskCategory = new TaskCategory(help_str);
+            tcds.insertOrUpdate(taskCategory);
+            tcds.close();
             Toast.makeText(getApplicationContext(), "Name of caegory; " + help_str, Toast.LENGTH_SHORT).show();
             finish();
         }
