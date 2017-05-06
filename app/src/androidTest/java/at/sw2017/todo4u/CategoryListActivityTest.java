@@ -30,9 +30,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
-/**
- * Created by rwenig on 06.05.17.
- */
 public class CategoryListActivityTest {
     private Context context;
     private TaskCategoriesDataSource tcDs;
@@ -98,6 +95,21 @@ public class CategoryListActivityTest {
         onView(withText("test")).check(matches(isDisplayed()));
         onView(withId(R.id.category_add_btSave)).perform(click());
         onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
+    }
+
+    @Test
+    public void testInsertTaskCategoryAlreadyExist() {
+        onView(withId(R.id.bt_add_category)).perform(click());
+        onView(withId(R.id.tx_new_category)).perform(typeText("test"), closeSoftKeyboard());
+        onView(withId(R.id.category_add_btSave)).perform(click());
+        onView(withId(R.id.bt_add_category)).perform(click());
+        onView(withId(R.id.tx_new_category)).perform(typeText("test"), closeSoftKeyboard());
+        onView(withId(R.id.category_add_btSave)).perform(click());
+        onView(withId(R.id.bt_add_category)).perform(click());
+        onView(withId(R.id.tx_new_category)).perform(typeText("test2"), closeSoftKeyboard());
+        onView(withId(R.id.category_add_btSave)).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).check(matches(withText("test2")));
     }
 
 }

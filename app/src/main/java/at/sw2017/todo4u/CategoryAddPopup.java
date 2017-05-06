@@ -47,9 +47,20 @@ public class CategoryAddPopup extends AppCompatActivity {
         } else {
             tcds.open();
             TaskCategory taskCategory = new TaskCategory(help_str);
-            tcds.insertOrUpdate(taskCategory);
+            if(tcds.insertOrUpdate(taskCategory)) {
+                Toast.makeText(
+                        getApplicationContext(),
+                        String.format("Category %s created successfully.", help_str),
+                        Toast.LENGTH_SHORT
+                ).show();
+            } else {
+                Toast.makeText(
+                        getApplicationContext(),
+                        String.format("Creating category %s failed. Maybe it already exists.", help_str),
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
             tcds.close();
-            Toast.makeText(getApplicationContext(), "Name of caegory; " + help_str, Toast.LENGTH_SHORT).show();
             finish();
         }
     }
