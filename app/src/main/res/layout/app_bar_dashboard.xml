@@ -20,17 +20,16 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_dashboard" />
+    <include layout="@layout/content_dashboard"
+        android:id="@+id/include" />
 
 
-    <ImageButton
+    <Button
         android:id="@+id/bt_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:background="@android:color/transparent"
-        android:clickable="true"
-        android:onClick="changeToAddView"
-        app:srcCompat="@drawable/ic_add_circle_outline_black_100dp" />
+        android:background="@drawable/ic_add_circle_outline_dark_color_100dp"
+        android:onClick="changeToAddView"/>
 
 </android.support.design.widget.CoordinatorLayout>
