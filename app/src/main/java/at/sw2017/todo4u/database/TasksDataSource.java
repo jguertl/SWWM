@@ -100,7 +100,60 @@ public class TasksDataSource extends AbstractDataSource<Task> {
     }
 
     public List<Task> getTasksInCategory(TaskCategory category) {
+        if(category == null) return getAll();
         return getTasksInCategory(category.getId());
+    }
+
+    public List<Task> getNotFinishedTasksInCategory(TaskCategory category) {
+        String query = Todo4uContract.Task.STATE + " != ?";
+        String[] queryParam;
+        if(category != null) {
+            query += " AND " + Todo4uContract.Task.CATEGORY_ID + " = ?";
+            queryParam = new String[] {Integer.toString(Task.State.FINISHED.getStateId()), Long.toString(category.getId())};
+        } else {
+            queryParam = new String[] {Integer.toString(Task.State.FINISHED.getStateId())};
+        }
+
+        List<Task> objs = new ArrayList<>();
+
+        Cursor cursor = database.query(
+                tableName,
+                allColumns,
+                query,
+                queryParam,
+                null, null, null
+        );
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Task obj = cursorToObject(cursor);
+            objs.add(obj);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return objs;
+    }
+
+    public List<Task> getTasksInCategoryWithTitle(long categoryId, String title) {
+        List<Task> objs = new ArrayList<>();
+
+        Cursor cursor = database.query(
+                tableName,
+                allColumns,
+                Todo4uContract.Task.CATEGORY_ID + " = ? AND " +
+                Todo4uContract.Task.TITLE + " LIKE ?",
+                new String[]{Long.toString(categoryId), "%" + title + "%"},
+                null, null, null
+        );
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Task obj = cursorToObject(cursor);
+            objs.add(obj);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return objs;
     }
 
     public List<Task> getTasksInCategory(long categoryId) {
