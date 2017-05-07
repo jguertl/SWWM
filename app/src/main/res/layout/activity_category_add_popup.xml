@@ -41,7 +41,7 @@
 
 
         <Button
-            android:id="@+id/btn_cancel"
+            android:id="@+id/category_add_btCancel"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_marginRight="70dp"
@@ -49,7 +49,7 @@
             android:onClick="cancelPopup" />
 
         <Button
-            android:id="@+id/btn_save"
+            android:id="@+id/category_add_btSave"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_weight="1"

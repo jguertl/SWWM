@@ -27,6 +27,10 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
+            android:name=".TaskListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".CategoryAddPopup"
             android:theme="@style/Theme.AppCompat.Dialog">
         </activity>

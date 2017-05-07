@@ -10,21 +10,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import at.sw2017.todo4u.adapter.CategoryAdapter;
 import at.sw2017.todo4u.database.TaskCategoriesDataSource;
 import at.sw2017.todo4u.model.TaskCategory;
 
 
-public class CategoryListActivity extends AppCompatActivity implements View.OnClickListener, SearchView.OnQueryTextListener {
+public class CategoryListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
 
     private ListView category_list_view;
-    private ArrayAdapter adapter;
+    private ArrayAdapter<TaskCategory> adapter;
     private TaskCategoriesDataSource tcds;
     private SearchView searchView;
 
@@ -48,20 +49,26 @@ public class CategoryListActivity extends AppCompatActivity implements View.OnCl
         List<TaskCategory> categories = tcds.getAll();
         tcds.close();
 
-        List<String> categoriesAsString = new ArrayList<>();
-        for (TaskCategory taskCategory : categories) {
-            categoriesAsString.add(taskCategory.getName());
-        }
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_category);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Categories");
 
-        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, categoriesAsString);
-        //ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, test);
+        adapter = new CategoryAdapter(this, android.R.layout.simple_list_item_1, categories);
         category_list_view = (ListView) findViewById(R.id.category_list_view);
         category_list_view.setAdapter(adapter);
+        category_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object o = parent.getItemAtPosition(position);
+                if(o instanceof TaskCategory) {
+                    long tcId = ((TaskCategory)o).getId();
+                    Intent intent = new Intent(CategoryListActivity.this, TaskListActivity.class);
+                    intent.putExtra("id", tcId);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
 
@@ -106,10 +113,6 @@ public class CategoryListActivity extends AppCompatActivity implements View.OnCl
         finish();
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
 
     @Override
     protected void onResume() {
@@ -118,15 +121,10 @@ public class CategoryListActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void updateData() {
-        List<String> categoriesAsStrings = new ArrayList<>();
         adapter.clear();
         tcds.open();
-        List<TaskCategory> taskCategories = tcds.getAll();
+        adapter.addAll(tcds.getAll());
         tcds.close();
-        for (TaskCategory taskCategory : taskCategories) {
-            categoriesAsStrings.add(taskCategory.getName());
-        }
-        adapter.addAll(categoriesAsStrings);
         adapter.notifyDataSetChanged();
     }
 
@@ -137,24 +135,11 @@ public class CategoryListActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        List<String> foundCategories = new ArrayList<>();
         tcds.open();
-        List<TaskCategory> taskCategories = tcds.getAll();
-        tcds.close();
-
-        for (TaskCategory taskCategory : taskCategories) {
-            if (taskCategory.getName().contains(newText)) {
-                foundCategories.add(taskCategory.getName());
-            }
-        }
-
-        updateData(foundCategories);
-        return false;
-    }
-
-    private void updateData(List<String> data) {
         adapter.clear();
-        adapter.addAll(data);
+        adapter.addAll(tcds.getCategoriesWithName(newText));
+        tcds.close();
         adapter.notifyDataSetChanged();
+        return false;
     }
 }
