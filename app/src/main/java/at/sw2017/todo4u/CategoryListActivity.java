@@ -53,6 +53,9 @@ public class CategoryListActivity extends AppCompatActivity implements SearchVie
                 Object o = parent.getItemAtPosition(position);
                 if(o instanceof TaskCategory) {
                     long tcId = ((TaskCategory)o).getId();
+                    Intent intent = new Intent(CategoryListActivity.this, TaskListActivity.class);
+                    intent.putExtra("id", tcId);
+                    startActivity(intent);
                 }
             }
         });
