@@ -200,7 +200,7 @@ public class DatabaseTest {
 
     @Test
     public void insertUpdateDelete() {
-        String categoryName = "My Test Category";
+        String categoryName = "My Test Category 2";
         String taskTitle = "My First TEST TASK";
         String taskDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et tempus magna. Fusce dui odio, cursus quis nisi ac, luctus iaculis nulla. In mollis eget nibh et mattis. Morbi quis sapien quam. Nullam a ullamcorper magna. Integer pellentesque ipsum facilisis eros hendrerit posuere sed in ante. Donec sodales massa non neque vulputate, sagittis ullamcorper eros vehicula.";
         Calendar dueCal = Calendar.getInstance();
