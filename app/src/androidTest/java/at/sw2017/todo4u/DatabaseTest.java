@@ -16,6 +16,7 @@ import java.util.List;
 
 import at.sw2017.todo4u.database.TaskCategoriesDataSource;
 import at.sw2017.todo4u.database.TasksDataSource;
+import at.sw2017.todo4u.database.Todo4uContract;
 import at.sw2017.todo4u.database.Todo4uDbHelper;
 import at.sw2017.todo4u.model.Task;
 import at.sw2017.todo4u.model.TaskCategory;
@@ -168,6 +169,9 @@ public class DatabaseTest {
 
         TaskCategoriesDataSource tcDs = new TaskCategoriesDataSource(instrumentationCtx);
         tcDs.open();
+        tcDs.getDatabase().execSQL("DELETE FROM "+ Todo4uContract.TaskCategory._TABLE_NAME);
+        tcDs.getDatabase().execSQL("DELETE FROM "+ Todo4uContract.Task._TABLE_NAME);
+
         assertTrue(tcDs.insertOrUpdate(cat));
 
 
