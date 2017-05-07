@@ -117,4 +117,8 @@ abstract class AbstractDataSource<T extends BaseModel> {
     protected Context getContext() {
         return dbHelper.getContext();
     }
+
+    public SQLiteDatabase getDatabase() {
+        return database;
+    }
 }
