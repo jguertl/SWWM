@@ -20,6 +20,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -74,8 +75,8 @@ public class CategoryListActivityTest {
         onView(withId(R.id.bt_add_category)).perform(click());
         onView(withId(R.id.category_add_btCancel)).perform(click());
 
-        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
-        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).check(matches(withText("awesome test")));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).onChildView(withText("test")).check(matches(isDisplayed()));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).onChildView(withText("awesome test")).check(matches(isDisplayed()));
     }
 
     @Test
@@ -85,7 +86,7 @@ public class CategoryListActivityTest {
         onView(withId(R.id.tx_new_category)).perform(typeText("test"), closeSoftKeyboard());
         onView(withText("test")).check(matches(isDisplayed()));
         onView(withId(R.id.category_add_btSave)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).onChildView(withText("test")).check(matches(isDisplayed()));
     }
 
     @Test
@@ -99,8 +100,8 @@ public class CategoryListActivityTest {
         onView(withId(R.id.bt_add_category)).perform(click());
         onView(withId(R.id.tx_new_category)).perform(typeText("test2"), closeSoftKeyboard());
         onView(withId(R.id.category_add_btSave)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
-        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).check(matches(withText("test2")));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).onChildView(withText("test")).check(matches(isDisplayed()));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).onChildView(withText("test2")).check(matches(isDisplayed()));
     }
 
     @Test
@@ -121,25 +122,34 @@ public class CategoryListActivityTest {
         onView(withId(R.id.bt_search_category)).perform(click());
         onView(withId(android.support.design.R.id.search_src_text))
                 .perform(typeText("t"), closeSoftKeyboard());
-        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
-        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).check(matches(withText("tes")));
-        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(2).check(matches(withText("te")));
-        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(3).check(matches(withText("t")));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).onChildView(withText("test")).check(matches(isDisplayed()));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).onChildView(withText("tes")).check(matches(isDisplayed()));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(2).onChildView(withText("te")).check(matches(isDisplayed()));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(3).onChildView(withText("t")).check(matches(isDisplayed()));
 
         onView(withId(android.support.design.R.id.search_src_text))
                 .perform(typeText("e"), closeSoftKeyboard());
-        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
-        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).check(matches(withText("tes")));
-        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(2).check(matches(withText("te")));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).onChildView(withText("test")).check(matches(isDisplayed()));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).onChildView(withText("tes")).check(matches(isDisplayed()));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(2).onChildView(withText("te")).check(matches(isDisplayed()));
 
         onView(withId(android.support.design.R.id.search_src_text))
                 .perform(typeText("s\n"), closeSoftKeyboard());
-        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
-        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).check(matches(withText("tes")));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).onChildView(withText("test")).check(matches(isDisplayed()));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).onChildView(withText("tes")).check(matches(isDisplayed()));
 
         onView(withId(android.support.design.R.id.search_src_text))
                 .perform(typeText("t"), closeSoftKeyboard());
-        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).check(matches(withText("test")));
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).onChildView(withText("test")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void addEmpty() {
+        onView(withId(R.id.bt_add_category)).perform(click());
+        onView(withId(R.id.category_add_btSave)).perform(click());
+        onView(withText("At least one character, please"))
+                .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView()))))
+                .check(matches(isDisplayed()));
     }
 
 }
