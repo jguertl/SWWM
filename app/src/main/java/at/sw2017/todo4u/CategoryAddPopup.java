@@ -64,7 +64,7 @@ public class CategoryAddPopup extends AppCompatActivity implements View.OnClickL
             TaskCategory taskCategory = new TaskCategory(help_str);
             tcds.insertOrUpdate(taskCategory);
             tcds.close();
-            Toast.makeText(getApplicationContext(), "Name of caegory; " + help_str, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Name of caegory: " + help_str, Toast.LENGTH_SHORT).show();
             finish();
         }
     }
