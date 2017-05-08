@@ -97,9 +97,23 @@ abstract class AbstractDataSource<T extends BaseModel> {
     }
 
     public List<T> getAll() {
+        return getSelection(null, null, null, null, null);
+    }
+
+    protected List<T> getSelection(String selection, String[] selectionArgs) {
+        return getSelection(selection, selectionArgs, null, null, null);
+    }
+
+    protected List<T> getSelection(String selection,
+                                String[] selectionArgs, String groupBy, String having,
+                                String orderBy) {
         List<T> objects = new ArrayList<>();
 
-        Cursor cursor = database.query(tableName, allColumns, null, null, null, null, null);
+        Cursor cursor = database.query(
+                tableName, allColumns,
+                selection, selectionArgs,
+                groupBy, having, orderBy
+        );
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {

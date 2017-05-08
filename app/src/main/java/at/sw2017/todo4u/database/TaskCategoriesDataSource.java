@@ -31,24 +31,10 @@ public class TaskCategoriesDataSource extends AbstractDataSource<TaskCategory> {
     }
 
     public List<TaskCategory> getCategoriesWithName(String name) {
-        List<TaskCategory> objects = new ArrayList<>();
-
-        Cursor cursor = database.query(
-                tableName,
-                allColumns,
+        return getSelection(
                 Todo4uContract.TaskCategory.NAME + " LIKE ?",
                 new String[]{"%" + name + "%"},
-                null, null, null
-        );
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            TaskCategory obj = cursorToObject(cursor);
-            objects.add(obj);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return objects;
+                null, null, null);
     }
 
 }
