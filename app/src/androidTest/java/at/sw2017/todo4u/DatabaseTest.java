@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.MediumTest;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +19,12 @@ import at.sw2017.todo4u.database.Todo4uDbHelper;
 import at.sw2017.todo4u.model.Task;
 import at.sw2017.todo4u.model.TaskCategory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 @MediumTest
@@ -85,6 +89,7 @@ public class DatabaseTest {
 
         tDs.close();
     }
+
     @Test
     public void simpleInsertAndReadManyNull() {
         String categoryName = "My Null Category";
@@ -128,6 +133,7 @@ public class DatabaseTest {
 
         tDs.close();
     }
+
     @Test
     public void simpleInsertAndReadDescriptionAndCategoryNull() {
         String taskTitle = "My Null Null TASK";
@@ -291,10 +297,10 @@ public class DatabaseTest {
         TaskCategory tc = new TaskCategory("My Cat");
         TaskCategoriesDataSource tcDs = new TaskCategoriesDataSource(instrumentationCtx);
         assertFalse(tcDs.isDatabaseOpen());
-        assertFalse(tcDs.isDatabaseWriteable());
+        assertFalse(tcDs.isDatabaseWritable());
         tcDs.open();
         assertTrue(tcDs.isDatabaseOpen());
-        assertTrue(tcDs.isDatabaseWriteable());
+        assertTrue(tcDs.isDatabaseWritable());
         assertTrue(tcDs.insertOrUpdate(tc));
         assertNotEquals(0, tc.getId());
         tcDs.close();
@@ -306,7 +312,7 @@ public class DatabaseTest {
         t2.setCategory(tc);
 
         tDs.open();
-        assertTrue(tDs.isDatabaseWriteable());
+        assertTrue(tDs.isDatabaseWritable());
 
         assertTrue(tDs.insertOrUpdate(t1));
         assertTrue(tDs.insertOrUpdate(t2));

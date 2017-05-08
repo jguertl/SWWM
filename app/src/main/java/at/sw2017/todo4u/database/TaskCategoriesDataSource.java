@@ -31,7 +31,7 @@ public class TaskCategoriesDataSource extends AbstractDataSource<TaskCategory> {
     }
 
     public List<TaskCategory> getCategoriesWithName(String name) {
-        List<TaskCategory> objs = new ArrayList<>();
+        List<TaskCategory> objects = new ArrayList<>();
 
         Cursor cursor = database.query(
                 tableName,
@@ -44,11 +44,11 @@ public class TaskCategoriesDataSource extends AbstractDataSource<TaskCategory> {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             TaskCategory obj = cursorToObject(cursor);
-            objs.add(obj);
+            objects.add(obj);
             cursor.moveToNext();
         }
         cursor.close();
-        return objs;
+        return objects;
     }
 
 }

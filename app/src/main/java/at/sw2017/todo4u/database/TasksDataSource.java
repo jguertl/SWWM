@@ -100,18 +100,18 @@ public class TasksDataSource extends AbstractDataSource<Task> {
     }
 
     public List<Task> getTasksInCategory(TaskCategory category) {
-        if(category == null) return getAll();
+        if (category == null) return getAll();
         return getTasksInCategory(category.getId());
     }
 
     public List<Task> getNotFinishedTasksInCategory(TaskCategory category) {
         String query = Todo4uContract.Task.STATE + " != ?";
         String[] queryParam;
-        if(category != null) {
+        if (category != null) {
             query += " AND " + Todo4uContract.Task.CATEGORY_ID + " = ?";
-            queryParam = new String[] {Integer.toString(Task.State.FINISHED.getStateId()), Long.toString(category.getId())};
+            queryParam = new String[]{Integer.toString(Task.State.FINISHED.getStateId()), Long.toString(category.getId())};
         } else {
-            queryParam = new String[] {Integer.toString(Task.State.FINISHED.getStateId())};
+            queryParam = new String[]{Integer.toString(Task.State.FINISHED.getStateId())};
         }
 
         List<Task> objs = new ArrayList<>();
@@ -141,7 +141,7 @@ public class TasksDataSource extends AbstractDataSource<Task> {
                 tableName,
                 allColumns,
                 Todo4uContract.Task.CATEGORY_ID + " = ? AND " +
-                Todo4uContract.Task.TITLE + " LIKE ?",
+                        Todo4uContract.Task.TITLE + " LIKE ?",
                 new String[]{Long.toString(categoryId), "%" + title + "%"},
                 null, null, null
         );

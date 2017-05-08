@@ -9,7 +9,10 @@ import org.junit.runner.RunWith;
 import at.sw2017.todo4u.model.Task;
 import at.sw2017.todo4u.model.TaskCategory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 @SmallTest

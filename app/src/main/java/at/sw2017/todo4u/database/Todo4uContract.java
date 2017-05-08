@@ -3,12 +3,9 @@ package at.sw2017.todo4u.database;
 import android.provider.BaseColumns;
 
 public final class Todo4uContract {
-    // To prevent someone from accidentally instantiating the contract class,
-    // make the constructor private.
     private Todo4uContract() {
     }
 
-    /* Inner class that defines the table contents */
     public static class Task implements BaseColumns {
         public static final String _TABLE_NAME = "task";
         public static final String TITLE = "title";

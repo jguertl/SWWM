@@ -13,13 +13,12 @@ import java.util.List;
 import at.sw2017.todo4u.model.BaseModel;
 
 abstract class AbstractDataSource<T extends BaseModel> {
-    // Database fields
     protected SQLiteDatabase database;
-    private Todo4uDbHelper dbHelper;
-    protected String[] allColumns;
-    protected String tableName;
+    protected final String[] allColumns;
+    protected final String tableName;
+    private final Todo4uDbHelper dbHelper;
 
-    public AbstractDataSource(Context context, String[] allColumns, String tableName) {
+    AbstractDataSource(Context context, String[] allColumns, String tableName) {
         dbHelper = new Todo4uDbHelper(context);
         this.allColumns = allColumns;
         this.tableName = tableName;
@@ -37,7 +36,7 @@ abstract class AbstractDataSource<T extends BaseModel> {
         return (database != null && database.isOpen());
     }
 
-    public boolean isDatabaseWriteable() {
+    public boolean isDatabaseWritable() {
         return (database != null && database.isOpen() && !database.isReadOnly());
     }
 
@@ -98,18 +97,18 @@ abstract class AbstractDataSource<T extends BaseModel> {
     }
 
     public List<T> getAll() {
-        List<T> objs = new ArrayList<>();
+        List<T> objects = new ArrayList<>();
 
         Cursor cursor = database.query(tableName, allColumns, null, null, null, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             T obj = cursorToObject(cursor);
-            objs.add(obj);
+            objects.add(obj);
             cursor.moveToNext();
         }
         cursor.close();
-        return objs;
+        return objects;
     }
 
     protected abstract T cursorToObject(Cursor cursor);
