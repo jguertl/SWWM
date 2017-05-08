@@ -20,20 +20,20 @@
         </activity>
         <activity
             android:name=".DashboardActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".CategoryListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".TaskListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".CategoryAddPopup"
-            android:theme="@style/Theme.AppCompat.Dialog">
-        </activity>
+            android:theme="@style/Theme.AppCompat.Dialog"></activity>
+        <activity
+            android:name=".TaskAddActivity"
+            android:label="@string/title_activity_task_add"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

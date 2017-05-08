@@ -3,6 +3,7 @@ package at.sw2017.todo4u;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -113,8 +114,9 @@ public class TaskListActivity extends AppCompatActivity implements SearchView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.bt_add_task) {
-//            Intent intent = new Intent(TaskListActivity.this, TaskAddActivity.class);
-//            startActivity(intent);
+            Intent intent = new Intent(TaskListActivity.this, TaskAddActivity.class);
+            intent.putExtra("id", categoryId);
+            startActivity(intent);
         } else if (id == R.id.bt_search_task) {
             return true;
         } else if (id == android.R.id.home) {
