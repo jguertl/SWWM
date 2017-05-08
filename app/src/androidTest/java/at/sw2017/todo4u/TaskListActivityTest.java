@@ -3,8 +3,11 @@ package at.sw2017.todo4u;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.rule.ActivityTestRule;
+import android.widget.DatePicker;
 
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -27,6 +30,7 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
@@ -161,5 +165,81 @@ public class TaskListActivityTest {
         onData(anything()).inAdapterView(withId(R.id.task_list_view)).atPosition(0).onChildView(withText("test")).check(matches(isDisplayed()));
     }
 
+    @Test
+    public void insertTasks() {
+        TaskCategory cat = new TaskCategory("MyTaskCategory");
+        tcDs.open();
+        tcDs.insertOrUpdate(cat);
+        tcDs.close();
+
+        callOnResumeWorkaround();
+
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).perform(click());
+        onView(withId(R.id.task_list_view)).check(matches(isDisplayed()));
+
+        insertTask1();
+        insertTask2();
+
+    }
+
+    private void insertTask1() {
+        onView(withId(R.id.bt_add_task)).perform(click());
+
+        onView(withId(R.id.task_add_btSave)).perform(click());
+        onView(withText(R.string.task_add_error_required_fields))
+                .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView()))))
+                .check(matches(isDisplayed()));
+        onView(withId(R.id.task_add_tfTitle)).perform(typeText("My first task"), closeSoftKeyboard());
+        onView(withId(R.id.task_add_btSave)).perform(click());
+        onView(withText(R.string.task_add_error_required_fields))
+                .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView()))))
+                .check(matches(isDisplayed()));
+        onView(withId(R.id.task_add_tfDescription)).perform(typeText("My first task description"), closeSoftKeyboard());
+        onView(withId(R.id.task_add_btDueDate)).perform(click());
+        Calendar cal = Calendar.getInstance();
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName())))
+                .perform(PickerActions.setDate(
+                        cal.get(Calendar.YEAR),
+                        cal.get(Calendar.MONTH),
+                        cal.get(Calendar.DAY_OF_MONTH)
+                ));
+        onView(withText("OK")).perform(click());
+        onView(withId(R.id.task_add_btSave)).perform(click());
+
+        onData(anything()).inAdapterView(withId(R.id.task_list_view)).atPosition(0)
+                .onChildView(withText("My first task")).check(matches(isDisplayed()));
+    }
+
+    private void insertTask2() {
+        onView(withId(R.id.bt_add_task)).perform(click());
+
+        onView(withId(R.id.task_add_tfTitle)).perform(typeText("My second task"), closeSoftKeyboard());
+        onView(withId(R.id.task_add_tfDescription)).perform(typeText("My second task description"), closeSoftKeyboard());
+        onView(withId(R.id.task_add_btReminderDate)).perform(click());
+        Calendar cal = Calendar.getInstance();
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName())))
+                .perform(PickerActions.setDate(
+                        cal.get(Calendar.YEAR),
+                        cal.get(Calendar.MONTH),
+                        cal.get(Calendar.DAY_OF_MONTH)
+                ));
+        onView(withText("OK")).perform(click());
+        onView(withId(R.id.task_add_btSave)).perform(click());
+        onView(withText(R.string.task_add_error_required_fields))
+                .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView()))))
+                .check(matches(isDisplayed()));
+        onView(withId(R.id.task_add_btDueDate)).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName())))
+                .perform(PickerActions.setDate(
+                        cal.get(Calendar.YEAR),
+                        cal.get(Calendar.MONTH),
+                        cal.get(Calendar.DAY_OF_MONTH)
+                ));
+        onView(withText("OK")).perform(click());
+        onView(withId(R.id.task_add_btSave)).perform(click());
+
+        onData(anything()).inAdapterView(withId(R.id.task_list_view)).atPosition(1)
+                .onChildView(withText("My second task")).check(matches(isDisplayed()));
+    }
 
 }
