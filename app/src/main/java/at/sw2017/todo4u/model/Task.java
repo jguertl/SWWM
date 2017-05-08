@@ -1,9 +1,18 @@
 package at.sw2017.todo4u.model;
 
 import android.util.SparseArray;
+
 import java.util.Date;
 
 public class Task extends BaseModel {
+    private static final SparseArray<State> stateMap = new SparseArray<>();
+
+    static {
+        for (State type : State.values()) {
+            stateMap.put(type.stateId, type);
+        }
+    }
+
     private String title;
     private String description;
     private Date dueDate;
@@ -11,20 +20,6 @@ public class Task extends BaseModel {
     private Date reminderDate;
     private TaskCategory category;
     private State state;
-
-    public enum State {
-        OPEN(0), FINISHED(1), IN_PROGRESS(2);
-
-        private final int stateId;
-
-        State(int stateId) {
-            this.stateId = stateId;
-        }
-
-        public int getStateId() {
-            return stateId;
-        }
-    }
 
     public Task() {
     }
@@ -53,6 +48,10 @@ public class Task extends BaseModel {
         return dueDate;
     }
 
+    public void setDueDate(long dueDateMillis) {
+        this.dueDate = new Date(dueDateMillis);
+    }
+
     public Long getDueDateAsNumber() {
         if (dueDate == null) return null;
         return dueDate.getTime();
@@ -62,12 +61,12 @@ public class Task extends BaseModel {
         this.dueDate = dueDate;
     }
 
-    public void setDueDate(long dueDateMillis) {
-        this.dueDate = new Date(dueDateMillis);
-    }
-
     public Date getCreationDate() {
         return creationDate;
+    }
+
+    public void setCreationDate(long creationDateMillis) {
+        this.creationDate = new Date(creationDateMillis);
     }
 
     public Long getCreationDateAsNumber() {
@@ -79,12 +78,12 @@ public class Task extends BaseModel {
         this.creationDate = creationDate;
     }
 
-    public void setCreationDate(long creationDateMillis) {
-        this.creationDate = new Date(creationDateMillis);
-    }
-
     public Date getReminderDate() {
         return reminderDate;
+    }
+
+    public void setReminderDate(long reminderDateMillis) {
+        this.reminderDate = new Date(reminderDateMillis);
     }
 
     public Long getReminderDateAsNumber() {
@@ -94,10 +93,6 @@ public class Task extends BaseModel {
 
     public void setReminderDate(Date reminderDate) {
         this.reminderDate = reminderDate;
-    }
-
-    public void setReminderDate(long reminderDateMillis) {
-        this.reminderDate = new Date(reminderDateMillis);
     }
 
     public TaskCategory getCategory() {
@@ -112,24 +107,16 @@ public class Task extends BaseModel {
         return state;
     }
 
+    public void setState(int stateId) {
+        this.state = stateMap.get(stateId);
+    }
+
     public int getStateId() {
         return state.stateId;
     }
 
     public void setState(State state) {
         this.state = state;
-    }
-
-    private static final SparseArray<State> stateMap = new SparseArray<>();
-
-    static {
-        for (State type : State.values()) {
-            stateMap.put(type.stateId, type);
-        }
-    }
-
-    public void setState(int stateId) {
-        this.state = stateMap.get(stateId);
     }
 
     @Override
@@ -144,5 +131,19 @@ public class Task extends BaseModel {
                 ", category=" + category +
                 ", state=" + state +
                 '}';
+    }
+
+    public enum State {
+        OPEN(0), FINISHED(1), IN_PROGRESS(2);
+
+        private final int stateId;
+
+        State(int stateId) {
+            this.stateId = stateId;
+        }
+
+        public int getStateId() {
+            return stateId;
+        }
     }
 }

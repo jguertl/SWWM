@@ -24,23 +24,29 @@ import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 public class CategoryListActivityTest {
-    private Context context;
-    private TaskCategoriesDataSource tcDs;
-
-
     @Rule
-    public ActivityTestRule<CategoryListActivity> mActivityRule = new ActivityTestRule(CategoryListActivity.class);
-
+    public final ActivityTestRule<CategoryListActivity> mActivityRule = new ActivityTestRule<>(CategoryListActivity.class);
+    private TaskCategoriesDataSource tcDs;
 
     @Before
     public void setUp() {
-        context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getTargetContext();
         tcDs = new TaskCategoriesDataSource(context);
 
-        //clear database before test
+        removeAllCategories();
+    }
+
+    @After
+    public void tearDown() {
+        removeAllCategories();
+    }
+
+    private void removeAllCategories() {
         tcDs.open();
         List<TaskCategory> categories = tcDs.getAll();
         for (TaskCategory taskCategory : categories) {
@@ -49,15 +55,9 @@ public class CategoryListActivityTest {
         tcDs.close();
     }
 
-    @After
-    public void tearDown() {
-        //clear database after test
-        tcDs.open();
-        List<TaskCategory> categories = tcDs.getAll();
-        for (TaskCategory taskCategory : categories) {
-            tcDs.delete(taskCategory);
-        }
-        tcDs.close();
+    private void callOnResumeWorkaround() {
+        onView(withId(R.id.bt_add_category)).perform(click());
+        onView(withId(R.id.category_add_btCancel)).perform(click());
     }
 
 
@@ -71,9 +71,7 @@ public class CategoryListActivityTest {
         tcDs.insertOrUpdate(testCategory2);
         tcDs.close();
 
-        //workaround to call onResume methode
-        onView(withId(R.id.bt_add_category)).perform(click());
-        onView(withId(R.id.category_add_btCancel)).perform(click());
+        callOnResumeWorkaround();
 
         onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).onChildView(withText("test")).check(matches(isDisplayed()));
         onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(1).onChildView(withText("awesome test")).check(matches(isDisplayed()));
@@ -147,7 +145,7 @@ public class CategoryListActivityTest {
     public void addEmpty() {
         onView(withId(R.id.bt_add_category)).perform(click());
         onView(withId(R.id.category_add_btSave)).perform(click());
-        onView(withText("At least one character, please"))
+        onView(withText(R.string.category_add_error_name_empty))
                 .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView()))))
                 .check(matches(isDisplayed()));
     }

@@ -29,17 +29,19 @@ import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.startsWith;
 
 public class TaskListActivityTest {
+    @Rule
+    public final ActivityTestRule<CategoryListActivity> mActivityRule = new ActivityTestRule<>(CategoryListActivity.class);
     private Context context;
     private TaskCategoriesDataSource tcDs;
     private TasksDataSource tDs;
-
-
-    @Rule
-    public ActivityTestRule<CategoryListActivity> mActivityRule = new ActivityTestRule(CategoryListActivity.class);
-
 
     @Before
     public void setUp() {
@@ -47,6 +49,15 @@ public class TaskListActivityTest {
         tcDs = new TaskCategoriesDataSource(context);
         tDs = new TasksDataSource(context);
 
+        clearDatabase();
+    }
+
+    @After
+    public void tearDown() {
+        clearDatabase();
+    }
+
+    private void clearDatabase() {
         Todo4uDbHelper dbHelper = new Todo4uDbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.execSQL("DELETE FROM " + Todo4uContract.Task._TABLE_NAME);
@@ -54,14 +65,9 @@ public class TaskListActivityTest {
         db.close();
     }
 
-    @After
-    public void tearDown() {
-        //clear database after test
-        Todo4uDbHelper dbHelper = new Todo4uDbHelper(context);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.execSQL("DELETE FROM " + Todo4uContract.Task._TABLE_NAME);
-        db.execSQL("DELETE FROM " + Todo4uContract.TaskCategory._TABLE_NAME);
-        db.close();
+    private void callOnResumeWorkaround() {
+        onView(withId(R.id.bt_add_category)).perform(click());
+        onView(withId(R.id.category_add_btCancel)).perform(click());
     }
 
 
@@ -87,9 +93,7 @@ public class TaskListActivityTest {
         tDs.close();
 
 
-        //workaround to call onResume methode
-        onView(withId(R.id.bt_add_category)).perform(click());
-        onView(withId(R.id.category_add_btCancel)).perform(click());
+        callOnResumeWorkaround();
 
         onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).perform(click());
         onView(withId(R.id.task_list_view)).check(matches(isDisplayed()));
@@ -127,13 +131,10 @@ public class TaskListActivityTest {
         tDs.close();
 
 
-        //workaround to call onResume methode
-        onView(withId(R.id.bt_add_category)).perform(click());
-        onView(withId(R.id.category_add_btCancel)).perform(click());
+        callOnResumeWorkaround();
 
         onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).perform(click());
         onView(withId(R.id.task_list_view)).check(matches(isDisplayed()));
-
 
 
         onView(withId(R.id.bt_search_task)).perform(click());

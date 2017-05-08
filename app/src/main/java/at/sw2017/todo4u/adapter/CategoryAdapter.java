@@ -2,6 +2,7 @@ package at.sw2017.todo4u.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,9 @@ import at.sw2017.todo4u.model.TaskCategory;
 
 
 public class CategoryAdapter extends ArrayAdapter<TaskCategory> {
+    private static LayoutInflater inflater = null;
     private Activity activity;
     private List<TaskCategory> items;
-    private static LayoutInflater inflater = null;
 
     public CategoryAdapter(Activity activity, int textViewResourceId, List<TaskCategory> items) {
         super(activity, textViewResourceId, items);
@@ -45,13 +46,8 @@ public class CategoryAdapter extends ArrayAdapter<TaskCategory> {
         return position;
     }
 
-    public static class ViewHolder {
-        public TextView display_name;
-        public TextView display_count;
-
-    }
-
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View vi = convertView;
         final ViewHolder holder;
         try {
@@ -85,5 +81,11 @@ public class CategoryAdapter extends ArrayAdapter<TaskCategory> {
 
         }
         return vi;
+    }
+
+    public static class ViewHolder {
+        public TextView display_name;
+        public TextView display_count;
+
     }
 }

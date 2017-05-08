@@ -1,7 +1,7 @@
 package at.sw2017.todo4u;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
@@ -13,8 +13,7 @@ import at.sw2017.todo4u.model.TaskCategory;
 
 public class CategoryAddPopup extends AppCompatActivity {
 
-    private EditText tx_new_category;
-    TaskCategoriesDataSource tcds;
+    private TaskCategoriesDataSource tcds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,28 +34,31 @@ public class CategoryAddPopup extends AppCompatActivity {
     }
 
 
-    public void saveNewCategory(View v){
+    public void saveNewCategory(View v) {
 
-        tx_new_category = (EditText) findViewById(R.id.tx_new_category);
+        EditText tx_new_category = (EditText) findViewById(R.id.tx_new_category);
 
-        String help_str = tx_new_category.getText().toString();
+        String categoryName = tx_new_category.getText().toString();
 
-        if(help_str.isEmpty())
-        {
-            Toast.makeText(getApplicationContext(), "At least one character, please", Toast.LENGTH_SHORT).show();
+        if (categoryName.isEmpty()) {
+            Toast.makeText(
+                    getApplicationContext(),
+                    R.string.category_add_error_name_empty,
+                    Toast.LENGTH_SHORT
+            ).show();
         } else {
             tcds.open();
-            TaskCategory taskCategory = new TaskCategory(help_str);
-            if(tcds.insertOrUpdate(taskCategory)) {
+            TaskCategory taskCategory = new TaskCategory(categoryName);
+            if (tcds.insertOrUpdate(taskCategory)) {
                 Toast.makeText(
                         getApplicationContext(),
-                        String.format("Category %s created successfully.", help_str),
+                        getString(R.string.category_add_success, categoryName),
                         Toast.LENGTH_SHORT
                 ).show();
             } else {
                 Toast.makeText(
                         getApplicationContext(),
-                        String.format("Creating category %s failed. Maybe it already exists.", help_str),
+                        getString(R.string.category_add_error_database, categoryName),
                         Toast.LENGTH_SHORT
                 ).show();
             }
