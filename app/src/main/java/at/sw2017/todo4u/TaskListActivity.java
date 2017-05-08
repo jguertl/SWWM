@@ -95,8 +95,9 @@ public class TaskListActivity extends AppCompatActivity implements SearchView.On
         int id = item.getItemId();
 
         if (id == R.id.bt_add_task) {
-//            Intent intent = new Intent(TaskListActivity.this, TaskAddActivity.class);
-//            startActivity(intent);
+            Intent intent = new Intent(TaskListActivity.this, TaskAddActivity.class);
+            intent.putExtra("id", categoryId);
+            startActivity(intent);
         } else if (id == R.id.bt_search_task) {
             return true;
         } else if (id == android.R.id.home) {
