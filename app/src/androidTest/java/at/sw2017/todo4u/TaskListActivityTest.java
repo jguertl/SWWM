@@ -22,6 +22,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import at.sw2017.todo4u.database.TaskCategoriesDataSource;
 import at.sw2017.todo4u.database.TasksDataSource;
@@ -184,6 +185,40 @@ public class TaskListActivityTest {
 
         insertTask1();
         insertTask2();
+
+    }
+
+    @Test
+    public void testSortByDueDate() {
+        TaskCategory taskCategory = new TaskCategory("testCat");
+
+        Task task1 = new Task("task1");
+        task1.setDueDate(new Date(2017, 11, 26));
+        task1.setCategory(taskCategory);
+        Task task2 = new Task("task2");
+        task2.setDueDate(new Date(2017, 11, 22));
+        task2.setCategory(taskCategory);
+        Task task3 = new Task("task3");
+        task3.setDueDate(new Date(2017, 11, 24));
+        task3.setCategory(taskCategory);
+
+        tcDs.open();
+        tcDs.insertOrUpdate(taskCategory);
+        tcDs.close();
+
+        tDs.open();
+        tDs.insertOrUpdate(task1);
+        tDs.insertOrUpdate(task2);
+        tDs.insertOrUpdate(task3);
+        tDs.close();
+
+        callOnResumeWorkaround();
+
+        onData(anything()).inAdapterView(withId(R.id.category_list_view)).atPosition(0).perform(click());
+
+        onData(anything()).inAdapterView(withId(R.id.task_list_view)).atPosition(0).onChildView(withText("task2")).check(matches(isDisplayed()));
+        onData(anything()).inAdapterView(withId(R.id.task_list_view)).atPosition(1).onChildView(withText("task3")).check(matches(isDisplayed()));
+        onData(anything()).inAdapterView(withId(R.id.task_list_view)).atPosition(2).onChildView(withText("task1")).check(matches(isDisplayed()));
 
     }
 
