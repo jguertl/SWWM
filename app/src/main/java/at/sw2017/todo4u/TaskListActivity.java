@@ -16,6 +16,7 @@ import android.widget.Toast;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.ListIterator;
 
 import at.sw2017.todo4u.adapter.TaskAdapter;
 import at.sw2017.todo4u.database.TaskCategoriesDataSource;
@@ -32,6 +33,8 @@ public class TaskListActivity extends AppCompatActivity implements SearchView.On
     private TasksDataSource tds;
     private SearchView searchView;
     private DateComperator dateComperator = new DateComperator();
+    private boolean finishedList = false;
+    private String categoryHelp = "";
 
     private long categoryId = 0;
 
@@ -49,6 +52,7 @@ public class TaskListActivity extends AppCompatActivity implements SearchView.On
         tds.open();
         List<Task> tasks = tds.getTasksInCategory(categoryId);
         tds.close();
+        tasks = listNotFinished(tasks);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_task);
         setSupportActionBar(toolbar);
@@ -56,13 +60,13 @@ public class TaskListActivity extends AppCompatActivity implements SearchView.On
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-
         TaskCategoriesDataSource tcDs = new TaskCategoriesDataSource(this);
         tcDs.openReadonly();
         TaskCategory category = tcDs.getById(categoryId);
         String categoryName = "";
         if (category != null) {
             categoryName = category.getName();
+            categoryHelp = categoryName;
         }
 
         setTitle(getString(R.string.task_list_title, categoryName));
@@ -105,10 +109,31 @@ public class TaskListActivity extends AppCompatActivity implements SearchView.On
             startActivity(intent);
         } else if (id == R.id.bt_search_task) {
             return true;
+        } else if (id == R.id.bt_finished) {
+            tds.open();
+            List<Task> tasks = tds.getTasksInCategory(categoryId);
+            tds.close();
+            for(ListIterator<Task> it = tasks.listIterator(); it.hasNext();)
+            {
+                Task o = it.next();
+                if(!o.isFinished()) {it.remove();}
+            }
+            adapter = new TaskAdapter(this, android.R.layout.simple_list_item_1, tasks);
+            task_list_view = (ListView) findViewById(R.id.task_list_view);
+            task_list_view.setAdapter(adapter);
+            setTitle(getString(R.string.task_list_title_finished));
+            finishedList = true;
         } else if (id == android.R.id.home) {
-            Intent intent = new Intent(TaskListActivity.this, CategoryListActivity.class);
-            startActivity(intent);
-            finish();
+            if(finishedList){
+                updateData();
+                setTitle(getString(R.string.task_list_title, categoryHelp));
+                finishedList = false;
+            }
+            else {
+                Intent intent = new Intent(TaskListActivity.this, CategoryListActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -117,9 +142,16 @@ public class TaskListActivity extends AppCompatActivity implements SearchView.On
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(TaskListActivity.this, CategoryListActivity.class);
-        startActivity(intent);
-        finish();
+        if(finishedList){
+            updateData();
+            setTitle(getString(R.string.task_list_title, categoryHelp));
+            finishedList = false;
+        }
+        else {
+            Intent intent = new Intent(TaskListActivity.this, CategoryListActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
@@ -132,6 +164,7 @@ public class TaskListActivity extends AppCompatActivity implements SearchView.On
         tds.open();
         adapter.clear();
         List<Task> tasks = tds.getTasksInCategory(categoryId);
+        tasks = listNotFinished(tasks);
         Collections.sort(tasks, dateComperator);
         adapter.addAll(tasks);
         tds.close();
@@ -151,6 +184,17 @@ public class TaskListActivity extends AppCompatActivity implements SearchView.On
         tds.close();
         adapter.notifyDataSetChanged();
         return false;
+    }
+
+
+    List<Task> listNotFinished(List<Task> list)
+    {
+        for(ListIterator<Task> it = list.listIterator(); it.hasNext();)
+        {
+            Task o = it.next();
+            if(o.isFinished()){it.remove();}
+        }
+        return list;
     }
 }
 

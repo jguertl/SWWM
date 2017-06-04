@@ -146,8 +146,6 @@ public class TaskAddActivity extends AppCompatActivity {
     }
 
     private void updateData() {
-        boolean finish_flag = false;
-
         tds.open();
         TaskCategory cat = null;
         if (categoryId != 0) {
@@ -177,22 +175,8 @@ public class TaskAddActivity extends AppCompatActivity {
         task.setCategory(cat);
 
         task.setProgress(seekProgress.getProgress());
-
-        if(seekProgress.getProgress() == 100)
-        {
-            finish_flag = true;
-        }
-
         tds.insertOrUpdate(task);
         tds.close();
-
-
-        if(finish_flag)
-        {
-            tds.open();
-            tds.delete(task);
-            tds.close();
-        }
 
         finish();
     }
