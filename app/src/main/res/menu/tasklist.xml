@@ -18,6 +18,12 @@
         app:showAsAction="ifRoom|collapseActionView" />
 
     <item
+        android:id="@+id/bt_sort"
+        android:icon="@drawable/ic_assignment_black_24dp"
+        android:title="Sort by Progress"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/bt_finished"
         android:icon="@drawable/ic_check_black_24dp"
         android:title="@string/task_list_finished"
