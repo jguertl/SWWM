@@ -34,6 +34,7 @@ public class TaskCategory extends BaseModel {
         return "TaskCategory{" +
                 "id='" + getId() + '\'' +
                 ", name='" + name + '\'' +
+                ", color=" + color +
                 '}';
     }
 }

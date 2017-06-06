@@ -23,7 +23,7 @@ public class Todo4uDbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + Todo4uContract.TaskCategory._TABLE_NAME + " (" +
                     Todo4uContract.TaskCategory._ID + " INTEGER PRIMARY KEY," +
                     Todo4uContract.TaskCategory.NAME + " TEXT UNIQUE," +
-                    Todo4uContract.TaskCategory.COLOR + "INTEGER);";
+                    Todo4uContract.TaskCategory.COLOR + " INTEGER);";
     private static final String SQL_DELETE_TASK =
             "DROP TABLE IF EXISTS " + Todo4uContract.Task._TABLE_NAME;
     private static final String SQL_DELETE_TASKCATEGORY =
