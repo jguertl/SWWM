@@ -1,19 +1,20 @@
 package at.sw2017.todo4u.model;
 
-
-/**
- * Created by mRozwold on 06.06.2017.
- */
-
 public class Setting extends BaseModel {
     private String name;
     private Integer bool;
 
     public Setting() {
-
     }
 
     public Setting(String name) {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
         this.name = name;
     }
 

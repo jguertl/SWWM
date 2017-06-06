@@ -33,6 +33,7 @@ public class TaskListActivity extends AppCompatActivity implements SearchView.On
     private TasksDataSource tds;
     private SearchView searchView;
     private DateComperator dateComperator = new DateComperator();
+    private ProgressComperator progressComperator = new ProgressComperator();
     private boolean finishedList = false;
     private String categoryHelp = "";
 
@@ -109,6 +110,8 @@ public class TaskListActivity extends AppCompatActivity implements SearchView.On
             startActivity(intent);
         } else if (id == R.id.bt_search_task) {
             return true;
+        } else if (id == R.id.bt_sort) {
+            adapter.sort(progressComperator);
         } else if (id == R.id.bt_finished) {
             tds.open();
             List<Task> tasks = tds.getTasksInCategory(categoryId);
@@ -204,6 +207,19 @@ class DateComperator implements Comparator<Task> {
         if (task1.getDueDate().before(task2.getDueDate())) {
             return -1;
         } else if (task1.getDueDate().after(task2.getDueDate())) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+}
+
+class ProgressComperator implements Comparator<Task> {
+    @Override
+    public int compare(Task task1, Task task2) {
+        if (task1.getProgress() < task2.getProgress()) {
+            return -1;
+        } else if (task1.getProgress() > task2.getProgress()) {
             return 1;
         } else {
             return 0;
