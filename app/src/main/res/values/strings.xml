@@ -31,13 +31,13 @@
     <string name="task_attr_reminderDate">Reminder Date</string>
     <string name="task_attr_progress">Progress</string>
 
-    <string name="color_prompt">Choose color</string>
-    <string-array name="colors_arrays">
+    <string name="title_activity_setting">SettingActivity</string>
+
+    <string name="color_prompt">Choose color style</string>
+    <string-array name="colors_array">
         <item>None</item>
-        <item>Red</item>
-        <item>Green</item>
-        <item>Yellow</item>
-        <item>Blue</item>
-        <item>Cyan</item>
+        <item>Colorful</item>
+        <item>Gray and White</item>
+
     </string-array>
 </resources>

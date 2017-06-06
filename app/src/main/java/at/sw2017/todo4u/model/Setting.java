@@ -7,6 +7,9 @@ public class Setting extends BaseModel {
     public Setting() {
     }
 
+    public Setting(String name) {
+    }
+
     public String getName() {
         return name;
     }
@@ -21,5 +24,22 @@ public class Setting extends BaseModel {
 
     public void setBool(Integer bool) {
         this.bool = bool;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Setting{" +
+                "id='" + getId() + '\'' +
+                ", name='" + name + '\'' +
+                ", boolean='" + bool +
+                '}';
     }
 }

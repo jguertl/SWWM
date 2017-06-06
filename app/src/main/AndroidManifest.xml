@@ -13,9 +13,9 @@
             // From this the app starts .WelcomeScreen
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".CategoryListActivity"
@@ -29,7 +29,10 @@
         <activity
             android:name=".TaskAddActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity
+            android:name=".SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
