@@ -78,20 +78,24 @@ public class CategoryAdapter extends ArrayAdapter<TaskCategory> {
             holder.display_name.setText(cat.getName());
             holder.display_count.setText(String.format("%d", count));
 
+            // 0 = none, 1 = red, 2 = green, 3 = yellow, 4 = blue, 5 = cyan
+            int color = 0;
+            switch (cat.getColor())
+            {
+                case 0: break;
+                case 1: color = Color.argb(30, 200, 20, 30); break;
+                case 2: color = Color.argb(30, 30, 200, 20); break;
+                case 3: color = Color.argb(30, 220, 255, 0); break;
+                case 4: color = Color.argb(30, 20, 30, 200); break;
+                case 5: color = Color.argb(30, 0, 183, 235); break;
+                default: break;
+            }
+            vi.setBackgroundColor(color);
 
-            if(position % 2 == 0)
-                vi.setBackgroundColor(Color.LTGRAY);
-            else
-                vi.setBackgroundColor(Color.WHITE);
-//            int color = Color.WHITE;
-//            if(position % 4 == 0)
-//                color = Color.argb(30, 200, 20, 30);
-//            if(position % 4 == 1)
-//                color = Color.argb(30, 30, 200, 20);
-//            if(position % 4 == 2)
-//                color = Color.argb(30, 20, 30, 200);
-//            vi.setBackgroundColor(color);
-
+//            if(position % 2 == 0)
+//                vi.setBackgroundColor(Color.LTGRAY);
+//            else
+//                vi.setBackgroundColor(Color.WHITE);
 
         } catch (Exception e) {
         }

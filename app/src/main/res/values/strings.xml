@@ -30,4 +30,14 @@
     <string name="task_attr_dueDate">Due Date</string>
     <string name="task_attr_reminderDate">Reminder Date</string>
     <string name="task_attr_progress">Progress</string>
+
+    <string name="color_prompt">Choose color</string>
+    <string-array name="colors_arrays">
+        <item>None</item>
+        <item>Red</item>
+        <item>Green</item>
+        <item>Yellow</item>
+        <item>Blue</item>
+        <item>Cyan</item>
+    </string-array>
 </resources>
