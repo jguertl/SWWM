@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Todo4uDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "Todo4u.db";
     private static final String SQL_CREATE_TASK =
             "CREATE TABLE " + Todo4uContract.Task._TABLE_NAME + " (" +
@@ -22,12 +22,21 @@ public class Todo4uDbHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_TASKCATEGORY =
             "CREATE TABLE " + Todo4uContract.TaskCategory._TABLE_NAME + " (" +
                     Todo4uContract.TaskCategory._ID + " INTEGER PRIMARY KEY," +
-                    Todo4uContract.TaskCategory.NAME + " TEXT UNIQUE);";
+                    Todo4uContract.TaskCategory.NAME + " TEXT UNIQUE," +
+                    Todo4uContract.TaskCategory.COLOR + " INTEGER);";
     private static final String SQL_DELETE_TASK =
             "DROP TABLE IF EXISTS " + Todo4uContract.Task._TABLE_NAME;
     private static final String SQL_DELETE_TASKCATEGORY =
             "DROP TABLE IF EXISTS " + Todo4uContract.TaskCategory._TABLE_NAME;
     private final Context context;
+    // settings
+    private static final String SQL_CREATE_SETTING =
+            "CREATE TABLE " + Todo4uContract.Setting._TABLE_NAME + " (" +
+                    Todo4uContract.Setting._ID + " INTEGER PRIMARY KEY," +
+                    Todo4uContract.Setting.NAME + " TEXT UNIQUE, " +
+                    Todo4uContract.Setting.BOOLEAN + " INTEGER);";
+    private static final String SQL_DELETE_SETTING =
+            "DROP TABLE IF EXISTS " + Todo4uContract.Setting._TABLE_NAME;
 
     public Todo4uDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,6 +47,7 @@ public class Todo4uDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TASK);
         db.execSQL(SQL_CREATE_TASKCATEGORY);
+        db.execSQL(SQL_CREATE_SETTING);
     }
 
     @Override
@@ -47,6 +57,7 @@ public class Todo4uDbHelper extends SQLiteOpenHelper {
         // to simply to discard the data and start over
         db.execSQL(SQL_DELETE_TASKCATEGORY);
         db.execSQL(SQL_DELETE_TASK);
+        db.execSQL(SQL_DELETE_SETTING);
         onCreate(db);
     }
 

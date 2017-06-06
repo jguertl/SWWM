@@ -17,9 +17,16 @@ public final class Todo4uContract {
         public static final String PROGRESS = "progress";
     }
 
+
     public static class TaskCategory implements BaseColumns {
         public static final String _TABLE_NAME = "taskcategory";
         public static final String NAME = "name";
+        public static final String COLOR = "color";
     }
 
+    public static class Setting implements BaseColumns {
+        public static final String _TABLE_NAME = "setting";
+        public static final String NAME = "name";
+        public static final String BOOLEAN = "boolean";
+    }
 }

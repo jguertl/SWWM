@@ -2,6 +2,7 @@ package at.sw2017.todo4u.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Random;
 
 import at.sw2017.todo4u.R;
 import at.sw2017.todo4u.database.TasksDataSource;
@@ -46,6 +48,7 @@ public class CategoryAdapter extends ArrayAdapter<TaskCategory> {
         return position;
     }
 
+    @Override
     @NonNull
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View vi = convertView;
@@ -75,11 +78,28 @@ public class CategoryAdapter extends ArrayAdapter<TaskCategory> {
             holder.display_name.setText(cat.getName());
             holder.display_count.setText(String.format("%d", count));
 
+            // 0 = none, 1 = red, 2 = green, 3 = yellow, 4 = blue, 5 = cyan
+            int color = 0;
+            switch (cat.getColor())
+            {
+                case 0: break;
+                case 1: color = Color.argb(30, 200, 20, 30); break;
+                case 2: color = Color.argb(30, 30, 200, 20); break;
+                case 3: color = Color.argb(30, 220, 255, 0); break;
+                case 4: color = Color.argb(30, 20, 30, 200); break;
+                case 5: color = Color.argb(30, 0, 183, 235); break;
+                default: break;
+            }
+            vi.setBackgroundColor(color);
+
+//            if(position % 2 == 0)
+//                vi.setBackgroundColor(Color.LTGRAY);
+//            else
+//                vi.setBackgroundColor(Color.WHITE);
 
         } catch (Exception e) {
-
-
         }
+
         return vi;
     }
 
