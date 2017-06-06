@@ -30,4 +30,12 @@
     <string name="task_attr_dueDate">Due Date</string>
     <string name="task_attr_reminderDate">Reminder Date</string>
     <string name="task_attr_progress">Progress</string>
+    <string name="title_activity_setting">SettingActivity</string>
+
+    <string name="color_prompt">Choose color style</string>
+    <string-array name="colors_array">
+        <item>None</item>
+        <item>Colorful</item>
+        <item>Gray and White</item>
+    </string-array>
 </resources>

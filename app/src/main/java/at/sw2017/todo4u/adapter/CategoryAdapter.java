@@ -14,7 +14,10 @@ import java.util.List;
 import java.util.Random;
 
 import at.sw2017.todo4u.R;
+import at.sw2017.todo4u.SettingActivity;
+import at.sw2017.todo4u.database.SettingDataSource;
 import at.sw2017.todo4u.database.TasksDataSource;
+import at.sw2017.todo4u.model.Setting;
 import at.sw2017.todo4u.model.TaskCategory;
 
 
@@ -78,20 +81,26 @@ public class CategoryAdapter extends ArrayAdapter<TaskCategory> {
             holder.display_name.setText(cat.getName());
             holder.display_count.setText(String.format("%d", count));
 
+            SettingDataSource sds = new SettingDataSource(getContext());
+            sds.open();
+            List<Setting> list = sds.getSettingsWithName("");
 
-            if(position % 2 == 0)
-                vi.setBackgroundColor(Color.LTGRAY);
-            else
-                vi.setBackgroundColor(Color.WHITE);
-//            int color = Color.WHITE;
-//            if(position % 4 == 0)
-//                color = Color.argb(30, 200, 20, 30);
-//            if(position % 4 == 1)
-//                color = Color.argb(30, 30, 200, 20);
-//            if(position % 4 == 2)
-//                color = Color.argb(30, 20, 30, 200);
-//            vi.setBackgroundColor(color);
-
+            for (Setting s : list) {
+                if(s.getName().contains("None") && s.getBool() == 1){}
+                if(s.getName().contains("Colorful") && s.getBool() == 1)
+                {
+                    //int color = cat.getColor();
+                    //vi.setBackgroundColor(color);
+                }
+                if(s.getName().contains("Gray") && s.getBool() == 1)
+                {
+                    if(position % 2 == 0)
+                        vi.setBackgroundColor(Color.LTGRAY);
+                    else
+                        vi.setBackgroundColor(Color.WHITE);
+                }
+            }
+            sds.close();
 
         } catch (Exception e) {
         }

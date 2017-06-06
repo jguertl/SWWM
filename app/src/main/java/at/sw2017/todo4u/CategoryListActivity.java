@@ -2,6 +2,7 @@ package at.sw2017.todo4u;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Contacts;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -75,6 +76,9 @@ public class CategoryListActivity extends AppCompatActivity implements SearchVie
             startActivity(homeIntent);
         } else if (id == R.id.bt_search_category) {
             return true;
+        } else if (id == R.id.bt_settings) {
+            Intent homeIntent = new Intent(CategoryListActivity.this, SettingActivity.class);
+            startActivity(homeIntent);
         }
 
         return super.onOptionsItemSelected(item);
