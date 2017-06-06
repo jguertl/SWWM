@@ -44,6 +44,7 @@ public class SettingActivity extends AppCompatActivity {
         setting = new Setting("Gray and White");
         setting.setBool(0);
         sds.insertOrUpdate(setting);
+        List<Setting> list = sds.getSettingsWithName("");
         sds.close();
 
         spinnerColor = (Spinner) findViewById(R.id.spinner);

@@ -89,8 +89,19 @@ public class CategoryAdapter extends ArrayAdapter<TaskCategory> {
                 if(s.getName().contains("None") && s.getBool() == 1){vi.setBackgroundColor(Color.WHITE);}
                 if(s.getName().contains("Colorful") && s.getBool() == 1)
                 {
-                    //int color = cat.getColor();
-                    //vi.setBackgroundColor(color);
+                    int number = cat.getColor();
+                    int color = Color.WHITE;
+                    if(number == 1)
+                        color = Color.argb(30, 200, 20, 30);
+                    if(number == 2)
+                        color = Color.argb(30, 30, 200, 20);
+                    if(number == 3)
+                        color = Color.argb(30, 220, 255, 0);
+                    if(number == 4)
+                        color = Color.argb(30, 20, 30, 200);
+                    if(number == 5)
+                        color = Color.argb(30, 0, 183, 235);
+                    vi.setBackgroundColor(color);
                 }
                 if(s.getName().contains("Gray") && s.getBool() == 1)
                 {

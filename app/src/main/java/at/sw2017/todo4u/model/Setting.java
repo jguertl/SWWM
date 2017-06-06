@@ -8,6 +8,7 @@ public class Setting extends BaseModel {
     }
 
     public Setting(String name) {
+        this.name = name;
     }
 
     public String getName() {
@@ -24,14 +25,6 @@ public class Setting extends BaseModel {
 
     public void setBool(Integer bool) {
         this.bool = bool;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override
