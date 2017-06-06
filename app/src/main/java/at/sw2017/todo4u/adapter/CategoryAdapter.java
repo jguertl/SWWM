@@ -86,7 +86,7 @@ public class CategoryAdapter extends ArrayAdapter<TaskCategory> {
             List<Setting> list = sds.getSettingsWithName("");
 
             for (Setting s : list) {
-                if(s.getName().contains("None") && s.getBool() == 1){}
+                if(s.getName().contains("None") && s.getBool() == 1){vi.setBackgroundColor(Color.WHITE);}
                 if(s.getName().contains("Colorful") && s.getBool() == 1)
                 {
                     //int color = cat.getColor();

@@ -27,7 +27,7 @@ public class SettingDataSource extends AbstractDataSource<Setting> {
     protected ContentValues getContentValues(Setting object) {
         ContentValues values = new ContentValues();
         values.put(Todo4uContract.Setting.NAME, object.getName());
-        values.put(Todo4uContract.Setting.BOOLEAN, object.getName());
+        values.put(Todo4uContract.Setting.BOOLEAN, object.getBool());
 
         return values;
     }
